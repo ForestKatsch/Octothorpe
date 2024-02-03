@@ -8,12 +8,20 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State
+    var client = Client.shared
+
     var body: some View {
         VStack {
-            Image(systemName: "globe")
+            Image(systemName: "server.rack")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Button(action: {}) { Text("Say 'Hello, fuckers'") }
+        }
+        .onAppear {
+            Task {
+                try await client.connect()
+            }
         }
         .padding()
     }
