@@ -120,9 +120,9 @@ class MessageParser: MessageStream {
         super.init(string)
     }
 
-    var message = Message(.NICK)
+    var message = RawMessage(.NICK)
 
-    func parse() -> Message? {
+    func parse() -> RawMessage? {
         do {
             try parseMessage()
             return message
@@ -200,7 +200,7 @@ class MessageParser: MessageStream {
             throw OctoIRCError.parse("command is empty")
         }
 
-        guard let command = Message.Command(string: commandString) else {
+        guard let command = RawMessage.Command(string: commandString) else {
             throw OctoIRCError.parse("unknown command or numeric \(commandString)")
         }
 
@@ -232,7 +232,7 @@ class MessageParser: MessageStream {
     }
 }
 
-public extension Message {
+public extension RawMessage {
     init?(string: String) {
         let parser = MessageParser(string)
         guard let message = parser.parse() else {

@@ -17,10 +17,8 @@ private struct MessageView: View {
 
     var canSend: Bool { channel.canSend }
 
-    /*
-     @FocusState
-     private var messageInputFocused: Bool
-      */
+    @FocusState
+    private var messageInputFocused: Bool
 
     var sendButton: some View {
         Button(action: send) {
@@ -36,20 +34,24 @@ private struct MessageView: View {
 
     var messageInput: some View {
         TextField("label.message \(channel.name)", text: $message)
-            // .focused($messageInputFocused)
+            .focused($messageInputFocused)
             .frame(maxWidth: .infinity)
             .textFieldStyle(.roundedBorder)
             .padding(5)
     }
 
     var body: some View {
-        HStack {
+        ZStack(alignment: .trailing) {
             messageInput
             #if !os(macOS)
                 sendButton
+                    .padding(5)
+                    .padding(.trailing, 10)
             #endif
         }
+        .padding(10)
         .onSubmit(send)
+        .transaction { $0.animation = nil }
         /*
          .onChange(of: channel, initial: true) {
              print("appeared")
@@ -73,6 +75,8 @@ private struct MessageView: View {
             return
         }
 
+        messageInputFocused = true
+
         let msg = message
         message = ""
         Task {
@@ -84,9 +88,6 @@ private struct MessageView: View {
 struct ChannelView: View {
     @Binding
     var channel: IRCChannel
-
-    @State
-    var scrollId: Int?
 
     @State
     var showInspector = false
@@ -105,21 +106,30 @@ struct ChannelView: View {
     var userListView: some View {
         if let clientChannel = channel as? IRCClientChannel {
             UserListView(clientChannel)
-                .inspectorColumnWidth(min: 120, ideal: 175, max: 350)
         } else {
             EmptyView()
         }
     }
 
     var body: some View {
-        VStack {
-            ScrollView {}
-                .scrollPosition(id: $scrollId, anchor: .bottom)
+        VStack(spacing: 0) {
+            ScrollViewReader { proxy in
+                ScrollView {
+                    ChatMessageView(channel)
+                        .id(0)
+                }
+                .onChange(of: channel.messages.count, initial: true) {
+                    withAnimation {
+                        proxy.scrollTo(0, anchor: .bottom)
+                    }
+                }
+            }
             MessageView(channel: $channel)
         }
         #if os(macOS)
         .inspector(isPresented: $showInspector) {
             userListView
+                .inspectorColumnWidth(min: 120, ideal: 175, max: 350)
         }
         #else
         .sheet(isPresented: $showInspector) {

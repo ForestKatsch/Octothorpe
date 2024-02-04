@@ -17,9 +17,9 @@ class TestTransport: IRCTransport {
         // Do nothing
     }
 
-    var sent: [OctoIRC.Message] = []
+    var sent: [OctoIRC.RawMessage] = []
 
-    func send(_ message: OctoIRC.Message) async throws {
+    func send(_ message: OctoIRC.RawMessage) async throws {
         sent.append(message)
     }
 }

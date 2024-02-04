@@ -18,6 +18,8 @@
 		852FDB502B6EB5D200ABBD7C /* SidebarDisclosureGroupStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852FDB4F2B6EB5D200ABBD7C /* SidebarDisclosureGroupStyle.swift */; };
 		852FDB522B6EF93B00ABBD7C /* View+if.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852FDB512B6EF93B00ABBD7C /* View+if.swift */; };
 		852FDB542B6F21E600ABBD7C /* UserListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852FDB532B6F21E600ABBD7C /* UserListView.swift */; };
+		852FDB572B6F3A4900ABBD7C /* IRCMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852FDB562B6F3A4900ABBD7C /* IRCMessage.swift */; };
+		852FDB592B6F3D7600ABBD7C /* ChatMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852FDB582B6F3D7600ABBD7C /* ChatMessageView.swift */; };
 		8573793F2B6E1EE800EAAD92 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8573793E2B6E1EE800EAAD92 /* User.swift */; };
 		85B60FCA2B6DF67100579FD4 /* Message+parse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B60FC92B6DF67100579FD4 /* Message+parse.swift */; };
 		85B86D002B6C9FD8008FCBC4 /* OctothorpeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B86CFF2B6C9FD8008FCBC4 /* OctothorpeApp.swift */; };
@@ -29,7 +31,7 @@
 		85B86D222B6CA229008FCBC4 /* Nickname.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B86D212B6CA229008FCBC4 /* Nickname.swift */; };
 		85B86D2E2B6CA53B008FCBC4 /* NicknameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B86D2D2B6CA53B008FCBC4 /* NicknameTests.swift */; };
 		85B86D2F2B6CA53B008FCBC4 /* OctoIRC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85B86D122B6CA084008FCBC4 /* OctoIRC.framework */; };
-		85B86D382B6CA80C008FCBC4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B86D372B6CA80C008FCBC4 /* Message.swift */; };
+		85B86D382B6CA80C008FCBC4 /* RawMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B86D372B6CA80C008FCBC4 /* RawMessage.swift */; };
 		85B86D3A2B6CAC28008FCBC4 /* MessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B86D392B6CAC28008FCBC4 /* MessageTests.swift */; };
 		85B86D3C2B6CAE98008FCBC4 /* TestTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B86D3B2B6CAE98008FCBC4 /* TestTransport.swift */; };
 		85B86D3E2B6CAFBA008FCBC4 /* RawClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B86D3D2B6CAFBA008FCBC4 /* RawClientTests.swift */; };
@@ -88,6 +90,8 @@
 		852FDB4F2B6EB5D200ABBD7C /* SidebarDisclosureGroupStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarDisclosureGroupStyle.swift; sourceTree = "<group>"; };
 		852FDB512B6EF93B00ABBD7C /* View+if.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+if.swift"; sourceTree = "<group>"; };
 		852FDB532B6F21E600ABBD7C /* UserListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListView.swift; sourceTree = "<group>"; };
+		852FDB562B6F3A4900ABBD7C /* IRCMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRCMessage.swift; sourceTree = "<group>"; };
+		852FDB582B6F3D7600ABBD7C /* ChatMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageView.swift; sourceTree = "<group>"; };
 		8573793E2B6E1EE800EAAD92 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		85B60FC92B6DF67100579FD4 /* Message+parse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+parse.swift"; sourceTree = "<group>"; };
 		85B86CFC2B6C9FD8008FCBC4 /* Octothorpe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Octothorpe.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,7 +103,7 @@
 		85B86D212B6CA229008FCBC4 /* Nickname.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nickname.swift; sourceTree = "<group>"; };
 		85B86D2B2B6CA53B008FCBC4 /* OctoIRCTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OctoIRCTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		85B86D2D2B6CA53B008FCBC4 /* NicknameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameTests.swift; sourceTree = "<group>"; };
-		85B86D372B6CA80C008FCBC4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		85B86D372B6CA80C008FCBC4 /* RawMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawMessage.swift; sourceTree = "<group>"; };
 		85B86D392B6CAC28008FCBC4 /* MessageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTests.swift; sourceTree = "<group>"; };
 		85B86D3B2B6CAE98008FCBC4 /* TestTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTransport.swift; sourceTree = "<group>"; };
 		85B86D3D2B6CAFBA008FCBC4 /* RawClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RawClientTests.swift; sourceTree = "<group>"; };
@@ -140,6 +144,7 @@
 			children = (
 				852FDB3C2B6E2B7A00ABBD7C /* IRCClient.swift */,
 				852FDB3E2B6E2B9000ABBD7C /* IRCChannel.swift */,
+				852FDB562B6F3A4900ABBD7C /* IRCMessage.swift */,
 			);
 			path = State;
 			sourceTree = "<group>";
@@ -151,6 +156,7 @@
 				852FDB432B6E2DF300ABBD7C /* SidebarView.swift */,
 				852FDB452B6E2E6500ABBD7C /* ChannelView.swift */,
 				852FDB532B6F21E600ABBD7C /* UserListView.swift */,
+				852FDB582B6F3D7600ABBD7C /* ChatMessageView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -223,7 +229,7 @@
 				85B86D212B6CA229008FCBC4 /* Nickname.swift */,
 				85B86D442B6CBA00008FCBC4 /* Identity.swift */,
 				8573793E2B6E1EE800EAAD92 /* User.swift */,
-				85B86D372B6CA80C008FCBC4 /* Message.swift */,
+				85B86D372B6CA80C008FCBC4 /* RawMessage.swift */,
 				85B60FC92B6DF67100579FD4 /* Message+parse.swift */,
 				852FDB492B6E3BD700ABBD7C /* OctoIRCError.swift */,
 			);
@@ -393,6 +399,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				852FDB592B6F3D7600ABBD7C /* ChatMessageView.swift in Sources */,
 				852FDB462B6E2E6500ABBD7C /* ChannelView.swift in Sources */,
 				852FDB542B6F21E600ABBD7C /* UserListView.swift in Sources */,
 				852FDB442B6E2DF300ABBD7C /* SidebarView.swift in Sources */,
@@ -410,11 +417,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				852FDB572B6F3A4900ABBD7C /* IRCMessage.swift in Sources */,
 				85B60FCA2B6DF67100579FD4 /* Message+parse.swift in Sources */,
 				85B86D202B6CA0B7008FCBC4 /* RawClient.swift in Sources */,
 				852FDB3F2B6E2B9000ABBD7C /* IRCChannel.swift in Sources */,
 				8573793F2B6E1EE800EAAD92 /* User.swift in Sources */,
-				85B86D382B6CA80C008FCBC4 /* Message.swift in Sources */,
+				85B86D382B6CA80C008FCBC4 /* RawMessage.swift in Sources */,
 				85B86D222B6CA229008FCBC4 /* Nickname.swift in Sources */,
 				85B86D452B6CBA00008FCBC4 /* Identity.swift in Sources */,
 				852FDB4A2B6E3BD700ABBD7C /* OctoIRCError.swift in Sources */,

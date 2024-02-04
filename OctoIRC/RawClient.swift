@@ -14,7 +14,7 @@ public protocol IRCTransport: Hashable {
     var name: String { get }
     var received: ((_: String) async -> Void)? { get set }
     func connect() async throws -> Void
-    func send(_: Message) async throws -> Void
+    func send(_: RawMessage) async throws -> Void
 }
 
 struct MessageListener: Equatable {
@@ -28,7 +28,7 @@ struct MessageListener: Equatable {
         case destroy
     }
 
-    typealias Callback = (_ message: Message) async -> Outcome?
+    typealias Callback = (_ message: RawMessage) async -> Outcome?
 
     var id: AnyHashable
     var callback: Callback
@@ -70,6 +70,10 @@ open class RawClient: Equatable, Hashable {
     var transport: any IRCTransport
     var options: Options
 
+    public var source: RawMessage.Source {
+        .user(.init(nickname: options.identity.nickname))
+    }
+
     private var listeners: [MessageListener] = []
 
     public struct Options {
@@ -94,19 +98,19 @@ open class RawClient: Equatable, Hashable {
         onMessage(call: self.handle)
     }
 
-    func send(_ message: Message) async throws {
+    func send(_ message: RawMessage) async throws {
         log.debug("> \(message.message)")
         try await transport.send(message)
     }
 
     func received(_ received: String) async {
-        guard let message = Message(string: received) else {
+        guard let message = RawMessage(string: received) else {
             return
         }
 
         log.debug("< \(message.message)")
 
-        for listener in listeners {
+        for listener in listeners.reversed() {
             if let outcome = await listener.callback(message) {
                 switch outcome {
                 case .destroy:
@@ -122,7 +126,7 @@ open class RawClient: Equatable, Hashable {
         }
     }
 
-    func handle(ping message: Message) async -> MessageListener.Outcome? {
+    func handle(ping message: RawMessage) async -> MessageListener.Outcome? {
         if message.command != .PING {
             return nil
         }
@@ -134,7 +138,7 @@ open class RawClient: Equatable, Hashable {
 
         log.trace("Replying to 'ping' '\(token)'")
 
-        try? await send(Message(.PONG, [token]))
+        try? await send(RawMessage(.PONG, [token]))
 
         return .handled
     }
@@ -149,7 +153,7 @@ open class RawClient: Equatable, Hashable {
 
     // TODO: add "disconnected" logic to IRCTransport
     // Returns the first message for which `filter` returns `true`.
-    func onReceive(filter: @escaping (Message) -> Bool) async throws -> Message {
+    func onReceive(filter: @escaping (RawMessage) -> Bool) async throws -> RawMessage {
         let result = await withCheckedContinuation { continuation in
             onMessage { message in
                 if filter(message) {
@@ -166,7 +170,7 @@ open class RawClient: Equatable, Hashable {
         return result
     }
 
-    func onReceive(anyOf commandSet: Set<Message.Command>) async throws -> Message {
+    func onReceive(anyOf commandSet: Set<RawMessage.Command>) async throws -> RawMessage {
         log.debug("Waiting for any of \(commandSet.map { "'\($0.string)'" }.joined(separator: ", "))")
 
         return try await onReceive(filter: {
@@ -174,7 +178,7 @@ open class RawClient: Equatable, Hashable {
         })
     }
 
-    func onReceive(command: Message.Command) async throws -> Message {
+    func onReceive(command: RawMessage.Command) async throws -> RawMessage {
         try await onReceive(anyOf: [command])
     }
 

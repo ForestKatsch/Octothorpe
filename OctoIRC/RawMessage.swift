@@ -8,7 +8,7 @@
 import Foundation
 
 // This is an IRC message. This is the low-level underlying format through which all IRC communications happen.
-public struct Message {
+public struct RawMessage {
     public enum Source {
         case serverName(_ name: String)
         case user(_ user: User)
@@ -66,27 +66,27 @@ public struct Message {
         self.parameters = parameters
     }
 
-    static func CAP(_ parameters: [String]) -> Message {
+    static func CAP(_ parameters: [String]) -> RawMessage {
         .init(.CAP, parameters)
     }
 
-    static func PASS(serverPassword password: String) -> Message {
+    static func PASS(serverPassword password: String) -> RawMessage {
         .init(.PASS, [password])
     }
 
-    static func NICK(_ nickname: Nickname) -> Message {
+    static func NICK(_ nickname: Nickname) -> RawMessage {
         .init(.NICK, [nickname.string])
     }
 
-    static func USER(_ identity: Identity) -> Message {
+    static func USER(_ identity: Identity) -> RawMessage {
         .init(.USER, [identity.username, "0", "*", identity.realName])
     }
 
-    static func JOIN(_ channel: String) -> Message {
+    static func JOIN(_ channel: String) -> RawMessage {
         .init(.JOIN, [channel])
     }
 
-    static func PRIVMSG(_ channel: String, message: String) -> Message {
+    static func PRIVMSG(_ channel: String, message: String) -> RawMessage {
         .init(.PRIVMSG, [channel, message])
     }
 

@@ -4,37 +4,37 @@ import XCTest
 
 final class MessageTests: XCTestCase {
     func testMessageCreation() throws {
-        XCTAssertEqual(Message(.CAP).message, "CAP")
-        XCTAssertEqual(Message(.CAP, ["*"]).message, "CAP *")
+        XCTAssertEqual(RawMessage(.CAP).message, "CAP")
+        XCTAssertEqual(RawMessage(.CAP, ["*"]).message, "CAP *")
     }
 
     func testFinalParameter() throws {
-        XCTAssertEqual(Message(.CAP, [""]).message, "CAP :")
-        XCTAssertEqual(Message(.CAP, [":"]).message, "CAP ::")
-        XCTAssertEqual(Message(.CAP, ["hello world"]).message, "CAP :hello world")
-        XCTAssertEqual(Message(.CAP, ["hello"]).message, "CAP hello")
+        XCTAssertEqual(RawMessage(.CAP, [""]).message, "CAP :")
+        XCTAssertEqual(RawMessage(.CAP, [":"]).message, "CAP ::")
+        XCTAssertEqual(RawMessage(.CAP, ["hello world"]).message, "CAP :hello world")
+        XCTAssertEqual(RawMessage(.CAP, ["hello"]).message, "CAP hello")
     }
 
     func testSpecificMessages() throws {
         let commands = [
-            Message(.CAP),
-            Message(.CAP, [""]),
-            Message(.CAP, [" "]),
-            Message(.CAP, [":"]),
-            Message(.CAP, ["Hello, world"]),
-            Message(.CAP, ["Hi", "Hello, world"]),
-            Message(.CAP, ["Hi:", "Hello, world"]),
-            Message(.CAP, ["Hi#?", "Hello, world"]),
-            Message(.CAP, ["Hi#?", "  Hello, world     "]),
-            Message(source: .serverName("irc.net"), .CAP),
-            Message(source: .serverName("irc"), .CAP),
-            Message(source: .user(.init(nickname: .init(string: "DeltaOne"))), .CAP),
-            Message(source: .user(.init(nickname: .init(string: "DeltaOne"), host: "127.0.0.1")), .CAP),
-            Message(source: .user(.init(nickname: .init(string: "DeltaOne"), user: "DeltaOne__", host: "127.0.0.1")), .CAP),
-            Message(source: .user(.init(nickname: .init(string: "DeltaOne"), user: "DeltaOne__")), .CAP),
+            RawMessage(.CAP),
+            RawMessage(.CAP, [""]),
+            RawMessage(.CAP, [" "]),
+            RawMessage(.CAP, [":"]),
+            RawMessage(.CAP, ["Hello, world"]),
+            RawMessage(.CAP, ["Hi", "Hello, world"]),
+            RawMessage(.CAP, ["Hi:", "Hello, world"]),
+            RawMessage(.CAP, ["Hi#?", "Hello, world"]),
+            RawMessage(.CAP, ["Hi#?", "  Hello, world     "]),
+            RawMessage(source: .serverName("irc.net"), .CAP),
+            RawMessage(source: .serverName("irc"), .CAP),
+            RawMessage(source: .user(.init(nickname: .init(string: "DeltaOne"))), .CAP),
+            RawMessage(source: .user(.init(nickname: .init(string: "DeltaOne"), host: "127.0.0.1")), .CAP),
+            RawMessage(source: .user(.init(nickname: .init(string: "DeltaOne"), user: "DeltaOne__", host: "127.0.0.1")), .CAP),
+            RawMessage(source: .user(.init(nickname: .init(string: "DeltaOne"), user: "DeltaOne__")), .CAP),
         ]
         commands.forEach {
-            XCTAssertEqual(Message(string: $0.message)?.message ?? "", $0.message)
+            XCTAssertEqual(RawMessage(string: $0.message)?.message ?? "", $0.message)
         }
     }
 
@@ -46,7 +46,7 @@ final class MessageTests: XCTestCase {
         ]
 
         valid.forEach {
-            XCTAssertNotNil(Message(string: $0))
+            XCTAssertNotNil(RawMessage(string: $0))
         }
     }
 
@@ -57,7 +57,7 @@ final class MessageTests: XCTestCase {
         ]
 
         invalid.forEach {
-            XCTAssertNil(Message(string: $0))
+            XCTAssertNil(RawMessage(string: $0))
         }
     }
 }

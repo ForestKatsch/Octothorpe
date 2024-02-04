@@ -97,6 +97,9 @@ private struct UserSection: View {
 }
 
 struct UserListView: View {
+    @Environment(\.dismiss)
+    var dismiss
+
     var channel: IRCClientChannel
 
     init(_ channel: IRCClientChannel) {
@@ -115,5 +118,12 @@ struct UserListView: View {
         #if !os(macOS)
         .listStyle(.insetGrouped)
         #endif
+        .toolbar {
+            ToolbarItem(placement: .destructiveAction) {
+                Button(action: { dismiss() }) {
+                    Label("action.dismiss-sheet", systemImage: "xmark")
+                }
+            }
+        }
     }
 }

@@ -37,11 +37,10 @@ struct TwoColumnRoot: View {
         .onAppear {
             Task {
                 try await client.connect()
-                print("A")
-                _ = try await client.open(channel: "#general")
-                print("B")
+                _ = try await client.open(channel: "ZLSA")
+                _ = try await client.open(channel: "admin")
                 _ = try await client.open(channel: "#octothorpe")
-                print("C")
+                _ = try await client.open(channel: "#GroupOfEight")
             }
         }
     }

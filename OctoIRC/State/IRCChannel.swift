@@ -7,6 +7,7 @@
 
 import Foundation
 
+@Observable
 public class IRCChannel: Identifiable, Hashable {
     public static func == (lhs: IRCChannel, rhs: IRCChannel) -> Bool {
         lhs.client == rhs.client && lhs.name == rhs.name
@@ -26,6 +27,8 @@ public class IRCChannel: Identifiable, Hashable {
     // User-facing name
     public var name: String { "" }
 
+    public var messages: [IRCMessage] = []
+
     var client: IRCClient
 
     init(client: IRCClient) {
@@ -33,6 +36,12 @@ public class IRCChannel: Identifiable, Hashable {
     }
 
     public func send(message _: String) async throws {}
+
+    public func append(message: IRCMessage) {
+        DispatchQueue.main.async {
+            self.messages.append(message)
+        }
+    }
 }
 
 @Observable
@@ -133,7 +142,11 @@ public class IRCClientChannel: IRCChannel {
             throw OctoIRCError.notJoined
         }
 
-        try await client.send(.PRIVMSG(name, message: message))
+        let msg = RawMessage.PRIVMSG(name, message: message)
+
+        append(message: .init(source: client.source, message: message))
+
+        try await client.send(msg)
     }
 }
 

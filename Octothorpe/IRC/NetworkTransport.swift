@@ -96,7 +96,7 @@ class NetworkTransport: IRCTransport {
         }
     }
 
-    func send(_ message: OctoIRC.Message) async throws {
+    func send(_ message: OctoIRC.RawMessage) async throws {
         let string = message.message + "\r\n"
 
         return await withCheckedContinuation { continuation in
