@@ -32,8 +32,11 @@ public struct Message {
         case PRIVMSG
         case PING
         case PONG
+        case TOPIC
 
         case RPL_WELCOME = "001"
+        case RPL_TOPIC = "332"
+        case RPL_NAMREPLY = "353"
 
         var string: String {
             return self.rawValue

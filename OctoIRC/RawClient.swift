@@ -10,19 +10,67 @@ import os
 
 let log = Logger(subsystem: "com.forestkatsch.octoirc", category: "IRCClient")
 
-public protocol IRCTransport {
+public protocol IRCTransport: Hashable {
+    var name: String { get }
     var received: ((_: String) async -> Void)? { get set }
     func connect() async throws -> Void
     func send(_: Message) async throws -> Void
 }
 
+struct MessageListener: Equatable {
+    static func == (lhs: MessageListener, rhs: MessageListener) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    enum Outcome {
+        case ignored
+        case handled
+        case destroy
+    }
+
+    typealias Callback = (_ message: Message) async -> Outcome?
+
+    var id: AnyHashable
+    var callback: Callback
+
+    init(id: AnyHashable = UUID(), _ callback: @escaping Callback) {
+        self.id = id
+        self.callback = callback
+    }
+}
+
 @Observable
 // Connects as a client through a single Transport. This will normally connect to one server.
-open class IRCClient {
-    var transport: IRCTransport
+open class RawClient: Equatable, Hashable {
+    public static func == (_: RawClient, _: RawClient) -> Bool {
+        true
+    }
+
+    public func hash(into _: inout Hasher) {
+        // hasher.combine(client)
+    }
+
+    public enum ConnectionStatus {
+        case disconnected
+        case connecting
+        case handshaking
+        case connected
+    }
+
+    public var connectionStatus: ConnectionStatus = .disconnected
+
+    public var isConnected: Bool {
+        connectionStatus == .connected
+    }
+
+    public var isConnecting: Bool {
+        connectionStatus == .connecting || connectionStatus == .handshaking
+    }
+
+    var transport: any IRCTransport
     var options: Options
 
-    private var temporaryReceivedListener: ((_ message: Message) -> Void)?
+    private var listeners: [MessageListener] = []
 
     public struct Options {
         public let identity: Identity
@@ -33,16 +81,22 @@ open class IRCClient {
         }
     }
 
-    public init(_ transport: IRCTransport, options: Options) {
+    public init(_ transport: any IRCTransport, options: Options) {
         self.transport = transport
         self.options = options
 
         self.transport.received = received
+
+        setupListeners()
+    }
+
+    func setupListeners() {
+        onMessage(call: self.handle)
     }
 
     func send(_ message: Message) async throws {
-        try await transport.send(message)
         log.debug("> \(message.message)")
+        try await transport.send(message)
     }
 
     func received(_ received: String) async {
@@ -52,57 +106,58 @@ open class IRCClient {
 
         log.debug("< \(message.message)")
 
-        do {
-            switch message.command {
-            case .PING:
-                try await handle(ping: message)
-            default:
-                break
+        for listener in listeners {
+            if let outcome = await listener.callback(message) {
+                switch outcome {
+                case .destroy:
+                    if let index = listeners.firstIndex(where: { $0 == listener }) {
+                        listeners.remove(at: index)
+                    }
+                case .handled:
+                    break
+                case .ignored:
+                    continue
+                }
             }
-        } catch {
-            log.error("Unknown error while handling message '\(message.message)'")
-            // TODO:
-        }
-
-        if let temporaryReceivedListener {
-            temporaryReceivedListener(message)
         }
     }
 
-    func handle(ping message: Message) async throws {
+    func handle(ping message: Message) async -> MessageListener.Outcome? {
+        if message.command != .PING {
+            return nil
+        }
+
         guard let token = message.parameters.first else {
             // No token!
-            return
+            return nil
         }
 
         log.trace("Replying to 'ping' '\(token)'")
 
-        try await send(Message(.PONG, [token]))
+        try? await send(Message(.PONG, [token]))
+
+        return .handled
+    }
+
+    func onMessage(id: AnyHashable = UUID(), call callback: @escaping MessageListener.Callback) {
+        listeners.append(.init(id: id, callback))
+    }
+
+    func delete(listeners id: AnyHashable) {
+        listeners.removeAll { $0.id == id }
     }
 
     // TODO: add "disconnected" logic to IRCTransport
     // Returns the first message for which `filter` returns `true`.
     func onReceive(filter: @escaping (Message) -> Bool) async throws -> Message {
-        var pendingMessage: Message?
-
-        temporaryReceivedListener = { message in
-            pendingMessage = message
-        }
-
         let result = await withCheckedContinuation { continuation in
-            if let pendingMessage {
-                if filter(pendingMessage) == true {
-                    continuation.resume(returning: pendingMessage)
-                    temporaryReceivedListener = nil
-                    return
-                }
-            }
-
-            temporaryReceivedListener = { message in
+            onMessage { message in
                 if filter(message) {
                     continuation.resume(returning: message)
-                    self.temporaryReceivedListener = nil
+                    return .destroy
                 }
+
+                return nil
             }
         }
 
@@ -128,22 +183,22 @@ open class IRCClient {
 
         // No capability negotiation support.
         if response.command == .RPL_WELCOME {
+            print("welcome!")
             return
         }
 
         try await send(.CAP(["END"]))
-    }
 
-    public func join(channel: String) async throws {
-        try await send(.JOIN(channel))
-
-        _ = try await onReceive {
-            $0.command == .JOIN && $0.parameters.first == channel
-        }
+        // Wait for the welcome message.
+        _ = try await onReceive(anyOf: [.RPL_WELCOME])
     }
 
     public func connect() async throws {
+        connectionStatus = .connecting
+
         try await transport.connect()
+
+        connectionStatus = .handshaking
 
         try await send(.CAP(["LS", "302"]))
 
@@ -156,9 +211,8 @@ open class IRCClient {
 
         try await capabilityNegotiation()
 
-        // try await onReceive(.USER())
-        try await join(channel: "#octothorpe")
+        connectionStatus = .connected
 
-        try await send(.PRIVMSG("#octothorpe", message: "Hello fuckers"))
+        log.info("Successfully completed handshake and connected to \(self.transport.name)")
     }
 }

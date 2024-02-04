@@ -1,0 +1,247 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "action.collapse" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collapse"
+          }
+        }
+      }
+    },
+    "action.expand" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expand"
+          }
+        }
+      }
+    },
+    "action.join-channel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join Channel"
+          }
+        }
+      }
+    },
+    "action.join-channel %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join %@"
+          }
+        }
+      }
+    },
+    "action.part-channel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Part"
+          }
+        }
+      }
+    },
+    "action.send-message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send"
+          }
+        }
+      }
+    },
+    "action.toggle-users" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toggle Users"
+          }
+        }
+      }
+    },
+    "description.select-a-channel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select a channel to view"
+          }
+        }
+      }
+    },
+    "label.app-name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Octothorpe"
+          }
+        }
+      }
+    },
+    "label.channel-users %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Users in %@"
+          }
+        }
+      }
+    },
+    "label.message %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Message %@"
+          }
+        }
+      }
+    },
+    "label.select-a-channel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No channel open"
+          }
+        }
+      }
+    },
+    "label.user-membership.founder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Founders"
+          }
+        }
+      }
+    },
+    "label.user-membership.half-op" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Half-ops"
+          }
+        }
+      }
+    },
+    "label.user-membership.none" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Members"
+          }
+        }
+      }
+    },
+    "label.user-membership.op" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ops"
+          }
+        }
+      }
+    },
+    "label.user-membership.protected" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protected"
+          }
+        }
+      }
+    },
+    "label.user-membership.voice" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voice"
+          }
+        }
+      }
+    },
+    "message.joining-channel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Joining..."
+          }
+        }
+      }
+    },
+    "prefix.user-membership.founder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "~"
+          }
+        }
+      }
+    },
+    "prefix.user-membership.half-op" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%"
+          }
+        }
+      }
+    },
+    "prefix.user-membership.op" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "@"
+          }
+        }
+      }
+    },
+    "prefix.user-membership.protected" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "&"
+          }
+        }
+      }
+    },
+    "prefix.user-membership.voice" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

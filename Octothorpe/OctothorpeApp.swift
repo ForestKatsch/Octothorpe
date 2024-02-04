@@ -11,7 +11,14 @@ import SwiftUI
 struct OctothorpeApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TwoColumnRoot()
+        }.commands {
+            SidebarCommands() // 1
         }
+        #if os(visionOS)
+        .defaultSize(width: 650, height: 700)
+        #elseif os(macOS)
+        .defaultSize(width: 850, height: 600)
+        #endif
     }
 }

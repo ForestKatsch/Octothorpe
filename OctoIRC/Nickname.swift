@@ -7,17 +7,27 @@
 
 import Foundation
 
-public struct Nickname {
+public struct Nickname: Identifiable, Equatable, Hashable {
+    public static func == (lhs: Nickname, rhs: Nickname) -> Bool {
+        lhs.nickname == rhs.nickname
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(nickname)
+    }
+
+    public var id: String { nickname }
+
     private let nickname: String
 
-    var string: String { nickname }
+    public var string: String { nickname }
 
     public init?(string: String) {
         guard let first = string.first else {
             return nil
         }
 
-        let bannedFirst: Set<Character> = [
+        let bannedPrefix: Set<Character> = [
             "$", // 0x24
             ":", // 0x3a
             "#", // channel type
@@ -28,7 +38,7 @@ public struct Nickname {
             "+", // voice prefix
         ]
 
-        if bannedFirst.contains(first) {
+        if bannedPrefix.contains(first) {
             return nil
         }
 

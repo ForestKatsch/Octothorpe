@@ -23,12 +23,15 @@ final class MessageTests: XCTestCase {
             Message(.CAP, [":"]),
             Message(.CAP, ["Hello, world"]),
             Message(.CAP, ["Hi", "Hello, world"]),
+            Message(.CAP, ["Hi:", "Hello, world"]),
+            Message(.CAP, ["Hi#?", "Hello, world"]),
+            Message(.CAP, ["Hi#?", "  Hello, world     "]),
             Message(source: .serverName("irc.net"), .CAP),
             Message(source: .serverName("irc"), .CAP),
-            Message(source: .nickname("DeltaOne"), .CAP),
-            Message(source: .nickname("DeltaOne", host: "127.0.0.1"), .CAP),
-            Message(source: .nickname("DeltaOne", user: "DeltaTwo"), .CAP),
-            Message(source: .nickname("DeltaOne", user: "DeltaTwo", host: "127.0.0.1"), .CAP),
+            Message(source: .user(.init(nickname: .init(string: "DeltaOne"))), .CAP),
+            Message(source: .user(.init(nickname: .init(string: "DeltaOne"), host: "127.0.0.1")), .CAP),
+            Message(source: .user(.init(nickname: .init(string: "DeltaOne"), user: "DeltaOne__", host: "127.0.0.1")), .CAP),
+            Message(source: .user(.init(nickname: .init(string: "DeltaOne"), user: "DeltaOne__")), .CAP),
         ]
         commands.forEach {
             XCTAssertEqual(Message(string: $0.message)?.message ?? "", $0.message)
@@ -49,7 +52,6 @@ final class MessageTests: XCTestCase {
 
     func testInvalidParsing() throws {
         let invalid = [
-            "CAP hey:",
             "CAP:",
             "",
         ]

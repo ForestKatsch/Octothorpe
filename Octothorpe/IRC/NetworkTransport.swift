@@ -10,6 +10,15 @@ import Network
 import OctoIRC
 
 class NetworkTransport: IRCTransport {
+    static func == (_: NetworkTransport, _: NetworkTransport) -> Bool {
+        true
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(host)
+        hasher.combine(port)
+    }
+
     var received: ((String) async -> Void)?
 
     var pendingMessage: String = ""
@@ -39,7 +48,15 @@ class NetworkTransport: IRCTransport {
         connection.state == .ready
     }
 
+    var host: String
+    var port: UInt16
+
+    var name: String { host }
+
     init?(_ host: String, port: UInt16) {
+        self.host = host
+        self.port = port
+
         let host = NWEndpoint.Host(host)
         guard let port = NWEndpoint.Port(rawValue: port) else { return nil }
 

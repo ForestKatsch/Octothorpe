@@ -1,15 +1,10 @@
 
 import Foundation
 
-enum OctoIRCError: Error {
-    case parse(_ context: String)
-    case notImplementedYet(_ context: String)
-}
-
 extension CharacterSet {
     static var ircParameter: CharacterSet {
         var disallowed = CharacterSet()
-        disallowed.insert(charactersIn: "\0\r\n&#: ")
+        disallowed.insert(charactersIn: "\0\r\n ")
 
         return disallowed.inverted
     }
